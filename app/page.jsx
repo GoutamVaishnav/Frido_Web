@@ -75,11 +75,62 @@ export default async function DashboardPage() {
         </div>
       </div>
 
-      {errorMsg && (
-        <div className="p-4 bg-amber-50 border border-amber-200 rounded-2xl text-xs text-amber-800">
-          <strong>Database Notice:</strong> {errorMsg}. Please ensure your Neon PostgreSQL connection string is configured in <code className="font-mono bg-amber-100 px-1 py-0.5 rounded">.env</code> and run <code className="font-mono bg-amber-100 px-1 py-0.5 rounded">npm run prisma:seed</code>.
+      {/* How It Works - Step-by-Step Workflow Guide */}
+      <div className="bg-gradient-to-r from-emerald-950/80 via-slate-900 to-slate-900 border border-emerald-500/20 rounded-2xl p-6 text-white shadow-sm">
+        <div className="flex items-center justify-between pb-4 border-b border-white/10 mb-5">
+          <div className="flex items-center gap-2.5">
+            <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
+            <h2 className="text-sm font-semibold text-white tracking-wide">
+              How ReturnDesk Works (Step-by-Step Flow)
+            </h2>
+          </div>
+          <span className="text-[11px] text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-full border border-emerald-500/20 font-medium">
+            10 Mock Orders Ready
+          </span>
         </div>
-      )}
+
+        <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 text-xs">
+          <div className="bg-white/5 border border-white/10 p-3.5 rounded-xl space-y-1.5">
+            <span className="text-[10px] font-bold text-emerald-400 uppercase tracking-wider block">
+              Step 1
+            </span>
+            <h4 className="font-semibold text-slate-100">1. Select an Order</h4>
+            <p className="text-[11px] text-slate-400 leading-relaxed">
+              Go to <Link href="/orders" className="text-emerald-400 hover:underline font-medium">Orders</Link> and pick any customer order (e.g. Rahul Sharma).
+            </p>
+          </div>
+
+          <div className="bg-white/5 border border-white/10 p-3.5 rounded-xl space-y-1.5">
+            <span className="text-[10px] font-bold text-emerald-400 uppercase tracking-wider block">
+              Step 2
+            </span>
+            <h4 className="font-semibold text-slate-100">2. Create Return</h4>
+            <p className="text-[11px] text-slate-400 leading-relaxed">
+              Click &quot;Create Return Request&quot; on any purchased line item. Reference ID is auto-generated.
+            </p>
+          </div>
+
+          <div className="bg-white/5 border border-white/10 p-3.5 rounded-xl space-y-1.5">
+            <span className="text-[10px] font-bold text-emerald-400 uppercase tracking-wider block">
+              Step 3
+            </span>
+            <h4 className="font-semibold text-slate-100">3. Review & Approve</h4>
+            <p className="text-[11px] text-slate-400 leading-relaxed">
+              Open the request. Move it to <em>In Review</em>, then click <em>Approve</em> and choose Refund or Replacement.
+            </p>
+          </div>
+
+          <div className="bg-white/5 border border-white/10 p-3.5 rounded-xl space-y-1.5">
+            <span className="text-[10px] font-bold text-emerald-400 uppercase tracking-wider block">
+              Step 4
+            </span>
+            <h4 className="font-semibold text-slate-100">4. Mark Completed</h4>
+            <p className="text-[11px] text-slate-400 leading-relaxed">
+              Click <em>Mark as Completed</em> to close ticket. Watch metrics update live across this dashboard!
+            </p>
+          </div>
+        </div>
+      </div>
 
       {/* 6 Metric Statistics Cards (Section 3 Requirement) */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
