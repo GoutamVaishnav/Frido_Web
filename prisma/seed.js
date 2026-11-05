@@ -4,7 +4,7 @@ const { mockOrders } = require('./seedData');
 const prisma = new PrismaClient();
 
 async function main() {
-  console.log('--- Starting ReturnDesk Database Seeding ---');
+  console.log('--- Starting ReturnDesk Indian Dataset Seeding ---');
 
   // Clear existing records if needed (in cascade order)
   console.log('Cleaning existing database records...');
@@ -13,7 +13,7 @@ async function main() {
   await prisma.orderItem.deleteMany({});
   await prisma.order.deleteMany({});
 
-  console.log('Seeding 10 mock orders and products...');
+  console.log('Seeding 10 Indian mock orders and products...');
   const createdOrders = [];
   const createdItems = [];
 
@@ -48,531 +48,532 @@ async function main() {
 
   console.log(`Created ${createdOrders.length} orders with ${createdItems.length} order items.`);
 
-  // Define 32 realistic return requests ensuring Rule 3 (No duplicate live requests on same order item)
-  // Statuses: Open, In Review, Approved, Rejected, Completed
-  // Reasons: Damaged, Wrong Item, Size Issue, Not As Described, Changed Mind
-  // Resolutions: Refund, Replacement, Store Credit
+  // 34 realistic return requests based on Indian e-commerce support scenarios
+  // Enforcing Rule 3: Single live request per order item (Live: Open, In Review, Approved)
+  // Enforcing Rule 2: Approval requires resolution (Refund requires refundAmount > 0)
+  // Enforcing Rule 5: Soft delete sample
 
   const returnRequestsData = [
     // 1: Open
     {
       refSuffix: '0001',
-      itemIndex: 0, // Headphones (ORD-1001)
+      itemIndex: 0, // Frido Dual-Gel Insoles (ORD-1001)
       quantity: 1,
-      reason: 'Damaged',
-      description: 'The right ear cup produces severe static buzzing noise when active noise cancelling is toggled.',
+      reason: 'Size Issue',
+      description: 'Insoles are slightly broader than shoe toe box for formal loafers. Requesting replacement guide or smaller size.',
       status: 'Open',
       resolution: null,
       refundAmount: null,
       notes: [
-        { agentName: 'Alex Rivera (Customer Portal)', text: 'Return initiated through online customer support portal.' },
+        { agentName: 'Rahul Sharma (Customer Portal)', text: 'Return request submitted via Frido online customer portal.' },
       ],
       createdAt: new Date('2026-02-16T11:00:00Z'),
     },
     // 2: In Review
     {
       refSuffix: '0002',
-      itemIndex: 1, // USB-C Cables (ORD-1001)
+      itemIndex: 1, // Frido Coccyx Cushion (ORD-1001)
       quantity: 1,
-      reason: 'Wrong Item',
-      description: 'Received USB-A to USB-C cables instead of the dual USB-C 100W cables ordered.',
+      reason: 'Not As Described',
+      description: 'Cushion foam density is softer than expected for lower back sciatica pain relief.',
       status: 'In Review',
       resolution: null,
       refundAmount: null,
       notes: [
-        { agentName: 'Agent Sarah Davis', text: 'Requested photos of the packaging barcode to verify warehouse mispick.' },
-        { agentName: 'Agent Sarah Davis', text: 'Photos received from customer. Packaging verified as SKU ACC-CAB-001 instead of 002.' },
+        { agentName: 'Agent Priya Sharma', text: 'Called customer to understand seat height setup. Recommending firmer orthotic variant.' },
+        { agentName: 'Agent Priya Sharma', text: 'Customer willing to try firm edition exchange.' },
       ],
       createdAt: new Date('2026-02-17T09:30:00Z'),
     },
     // 3: Approved (Refund)
     {
       refSuffix: '0003',
-      itemIndex: 2, // Headphone Travel Case (ORD-1001)
+      itemIndex: 2, // Frido Posture Corrector (ORD-1001)
       quantity: 1,
-      reason: 'Not As Described',
-      description: 'The case interior zipper was defective and does not fit the AcousticPro model despite description.',
+      reason: 'Damaged',
+      description: 'Right shoulder strap velcro buckle arrived torn in packaging.',
       status: 'Approved',
       resolution: 'Refund',
-      refundAmount: 49.99,
+      refundAmount: 1299.00,
       notes: [
-        { agentName: 'Agent Mike Zhao', text: 'Approved full refund. Prepaid return shipping label generated and sent.' },
+        { agentName: 'Agent Rajesh Kumar', text: 'Defect photos verified. Approved full refund of ₹1,299 to original UPI account.' },
       ],
       createdAt: new Date('2026-02-18T14:20:00Z'),
     },
     // 4: Completed (Replacement)
     {
       refSuffix: '0004',
-      itemIndex: 3, // Ergo Mesh Chair (ORD-1002) - Historical completed
+      itemIndex: 3, // Headphones (ORD-1002)
       quantity: 1,
       reason: 'Damaged',
-      description: 'Armrest bracket arrived cracked in transit.',
+      description: 'Right ear cup static buzzing sound when active noise cancellation is switched on.',
       status: 'Completed',
       resolution: 'Replacement',
       refundAmount: null,
       notes: [
-        { agentName: 'Agent Emily Thorne', text: 'Dispatched replacement armrest assembly with express tracking #1Z9999.' },
-        { agentName: 'Agent Emily Thorne', text: 'Delivery confirmed by customer. Ticket closed successfully.' },
+        { agentName: 'Agent Sneha Rao', text: 'Courier pickup scheduled with Bluedart Air.' },
+        { agentName: 'Agent Sneha Rao', text: 'Brand new sealed unit delivered. Customer confirmed audio is crystal clear. Ticket closed.' },
       ],
       createdAt: new Date('2026-02-20T10:15:00Z'),
     },
-    // 5: Open (Desk Mat ORD-1002)
+    // 5: Open
     {
       refSuffix: '0005',
-      itemIndex: 4, // Anti-Fatigue Desk Mat
+      itemIndex: 4, // Type-C Cables (ORD-1002)
       quantity: 1,
-      reason: 'Changed Mind',
-      description: 'Desk mat is too large for current workstation setup.',
+      reason: 'Wrong Item',
+      description: 'Received USB-A to Type-C cable instead of dual Type-C 65W fast charger cables.',
       status: 'Open',
       resolution: null,
       refundAmount: null,
       notes: [
-        { agentName: 'Support Bot', text: 'Initial return request received. Item reported in unopened condition.' },
+        { agentName: 'Support Bot', text: 'Initial request logged. Awaiting agent assignment.' },
       ],
       createdAt: new Date('2026-02-22T16:00:00Z'),
     },
-    // 6: Rejected (Cable Raceway ORD-1002)
+    // 6: Rejected
     {
       refSuffix: '0006',
-      itemIndex: 5, // Cable Management Spine
+      itemIndex: 5, // Headphone Case (ORD-1002)
       quantity: 1,
-      reason: 'Size Issue',
-      description: 'Does not reach floor from high standing desk setting.',
+      reason: 'Changed Mind',
+      description: 'Customer found cheaper third-party sleeve on local market after using this for 25 days.',
       status: 'Rejected',
       resolution: null,
       refundAmount: null,
       notes: [
-        { agentName: 'Agent Mike Zhao', text: 'Product dimensions clearly state 48 inches max height. Customer customized desk to 56 inches.' },
-        { agentName: 'Agent Mike Zhao', text: 'Return rejected under modification guidelines. Recommended extension module.' },
+        { agentName: 'Agent Rajesh Kumar', text: 'Item returned past the 14-day return window with clear exterior scuff marks. Decline return.' },
       ],
       createdAt: new Date('2026-02-23T11:45:00Z'),
     },
-    // 7: Open (Running Shoes ORD-1003)
+    // 7: Open
     {
       refSuffix: '0007',
-      itemIndex: 6, // Running shoes
+      itemIndex: 6, // Mech Keyboard (ORD-1003)
       quantity: 1,
-      reason: 'Size Issue',
-      description: 'Toe box is slightly too narrow. Need half a size larger.',
+      reason: 'Damaged',
+      description: 'Spacebar key switch double-registers when typed at speed.',
       status: 'Open',
       resolution: null,
       refundAmount: null,
       notes: [
-        { agentName: 'Agent Sarah Davis', text: 'Customer asked if exchange for size 10.5 is in stock.' },
+        { agentName: 'Agent Rohan Verma', text: 'Requested video demonstration from customer.' },
       ],
       createdAt: new Date('2026-02-24T13:10:00Z'),
     },
     // 8: Approved (Store Credit)
     {
       refSuffix: '0008',
-      itemIndex: 7, // Compression socks (ORD-1003)
-      quantity: 2,
+      itemIndex: 7, // Vertical Mouse (ORD-1003)
+      quantity: 1,
       reason: 'Changed Mind',
-      description: 'Decided to switch to merino trail socks instead.',
+      description: 'Takes time getting used to vertical grip angle, prefers regular gaming mouse.',
       status: 'Approved',
       resolution: 'Store Credit',
       refundAmount: null,
       notes: [
-        { agentName: 'Agent Emily Thorne', text: 'Store credit coupon of $50.00 issued to customer account.' },
+        { agentName: 'Agent Priya Sharma', text: 'Approved ₹1,899 Frido store credit voucher for future accessories.' },
       ],
       createdAt: new Date('2026-02-25T15:20:00Z'),
     },
     // 9: Completed (Refund)
     {
       refSuffix: '0009',
-      itemIndex: 8, // Hydration Vest (ORD-1003)
+      itemIndex: 8, // Desk Blotter Mat (ORD-1003)
       quantity: 1,
       reason: 'Not As Described',
-      description: 'Flasks leak around screw cap seals on first fill.',
+      description: 'Mat dimensions do not match desk space listed on website.',
       status: 'Completed',
       resolution: 'Refund',
-      refundAmount: 120.00,
+      refundAmount: 999.00,
       notes: [
-        { agentName: 'Agent Sarah Davis', text: 'Defective batch confirmed with vendor. Full refund posted to original Visa card.' },
+        { agentName: 'Agent Rajesh Kumar', text: 'Return package received at warehouse. Full refund of ₹999 processed to HDFC Netbanking.' },
       ],
       createdAt: new Date('2026-02-26T17:00:00Z'),
     },
-    // 10: In Review (Keyboard ORD-1004)
+    // 10: In Review
     {
       refSuffix: '0010',
-      itemIndex: 9, // Mech Keyboard
+      itemIndex: 9, // Frido Cervical Pillow (ORD-1004)
       quantity: 1,
-      reason: 'Damaged',
-      description: 'Spacebar stabilizer wire is popped out and key sticks repeatedly.',
+      reason: 'Size Issue',
+      description: 'Pillow loft height of 4 inches is too elevated for stomach sleeping position.',
       status: 'In Review',
       resolution: null,
       refundAmount: null,
       notes: [
-        { agentName: 'Agent David Vance', text: 'Sent keyboard troubleshooting guide. Awaiting customer test response.' },
+        { agentName: 'Agent Sneha Rao', text: 'Reviewing ergonomic adjustment inserts to assist customer.' },
       ],
       createdAt: new Date('2026-02-27T10:00:00Z'),
     },
     // 11: Approved (Replacement)
     {
       refSuffix: '0011',
-      itemIndex: 10, // Vertical Mouse (ORD-1004)
+      itemIndex: 10, // Silk Pillowcase (ORD-1004)
       quantity: 1,
-      reason: 'Damaged',
-      description: 'Optical sensor stutters intermittently on smooth wood surface.',
+      reason: 'Wrong Item',
+      description: 'Received Champagne Gold instead of Pearl White ordered.',
       status: 'Approved',
       resolution: 'Replacement',
       refundAmount: null,
       notes: [
-        { agentName: 'Agent David Vance', text: 'Replacement mouse order created with priority courier.' },
+        { agentName: 'Agent Priya Sharma', text: 'Warehouse dispatch error confirmed. Dispatched correct Pearl White color.' },
       ],
       createdAt: new Date('2026-02-28T14:30:00Z'),
     },
-    // 12: Rejected (Desk Mat ORD-1004)
+    // 12: Rejected
     {
       refSuffix: '0012',
-      itemIndex: 11, // Wool Felt Mat
+      itemIndex: 11, // Lavender Mist (ORD-1004)
       quantity: 1,
       reason: 'Changed Mind',
-      description: 'Customer claims they found a cheaper alternative elsewhere after 3 weeks of daily use.',
+      description: 'Personal care cosmetic spray bottle opened and half consumed.',
       status: 'Rejected',
       resolution: null,
       refundAmount: null,
       notes: [
-        { agentName: 'Agent Sarah Davis', text: 'Return request rejected. Item shows clear pet hair and usage signs outside 14-day remorse window.' },
+        { agentName: 'Agent Sneha Rao', text: 'Cosmetic and wellness liquid products cannot be returned once security seal is broken.' },
       ],
       createdAt: new Date('2026-03-01T12:00:00Z'),
     },
     // 13: Completed (Refund)
     {
       refSuffix: '0013',
-      itemIndex: 12, // Commuter Backpack (ORD-1005)
+      itemIndex: 12, // Running Shoes (ORD-1005)
       quantity: 1,
-      reason: 'Wrong Item',
-      description: 'Ordered Espresso Brown leather, received Pitch Black.',
+      reason: 'Size Issue',
+      description: 'UK 9 is too tight across broad Indian toe profile.',
       status: 'Completed',
       resolution: 'Refund',
-      refundAmount: 350.00,
+      refundAmount: 3499.00,
       notes: [
-        { agentName: 'Agent Emily Thorne', text: 'Customer opted for refund as Espresso Brown is out of stock.' },
-        { agentName: 'Agent Emily Thorne', text: 'Return received in warehouse. $350.00 refund processed.' },
+        { agentName: 'Agent Rohan Verma', text: 'Customer opted for refund as UK 10 was temporarily out of stock.' },
+        { agentName: 'Agent Rohan Verma', text: '₹3,499 refunded to original card via Razorpay.' },
       ],
       createdAt: new Date('2026-03-02T09:15:00Z'),
     },
-    // 14: Open (Leather Wallet ORD-1005)
+    // 14: Open
     {
       refSuffix: '0014',
-      itemIndex: 13, // Leather Wallet
+      itemIndex: 13, // Running Socks (ORD-1005)
       quantity: 1,
-      reason: 'Size Issue',
-      description: 'Too thick when 6 credit cards are inserted.',
+      reason: 'Not As Described',
+      description: 'Fabric thickness is thinner than high-cushion description.',
       status: 'Open',
       resolution: null,
       refundAmount: null,
       notes: [
-        { agentName: 'Support Bot', text: 'Request logged. Customer awaiting guidance on slimmer cardholder alternatives.' },
+        { agentName: 'Support Bot', text: 'Request registered. In unopened condition.' },
       ],
       createdAt: new Date('2026-03-02T16:20:00Z'),
     },
-    // 15: In Review (Brass Key Organizer ORD-1005)
+    // 15: In Review
     {
       refSuffix: '0015',
-      itemIndex: 14, // Key Organizer
+      itemIndex: 14, // Sports Bottle (ORD-1005)
       quantity: 1,
       reason: 'Damaged',
-      description: 'Tension screw threads are stripped out of the box.',
+      description: 'Sipper cap thread leaks water when bottle is inverted.',
       status: 'In Review',
       resolution: null,
       refundAmount: null,
       notes: [
-        { agentName: 'Agent Mike Zhao', text: 'Requested photo of stripped thread to check manufacturing batch.' },
+        { agentName: 'Agent Rajesh Kumar', text: 'Requested photo of silicone gasket inside cap.' },
       ],
       createdAt: new Date('2026-03-03T11:00:00Z'),
     },
     // 16: Approved (Refund)
     {
       refSuffix: '0016',
-      itemIndex: 15, // Laptop Sleeve ORD-1005
+      itemIndex: 15, // Smartwatch (ORD-1006)
       quantity: 1,
-      reason: 'Size Issue',
-      description: '15-inch sleeve is too snug for 15.6 gaming laptop chassis.',
+      reason: 'Damaged',
+      description: 'Display touchscreen has unresponsive dead zone near bottom navigation bar.',
       status: 'Approved',
       resolution: 'Refund',
-      refundAmount: 150.00,
+      refundAmount: 3999.00,
       notes: [
-        { agentName: 'Agent Sarah Davis', text: 'Approved return for refund upon warehouse receipt.' },
+        { agentName: 'Agent Priya Sharma', text: 'Hardware defect verified by video. Prepaid Delhivery pickup scheduled.' },
       ],
       createdAt: new Date('2026-03-03T14:45:00Z'),
     },
-    // 17: Open (Smart Kettle ORD-1006)
+    // 17: Open
     {
       refSuffix: '0017',
-      itemIndex: 16, // Smart Kettle
+      itemIndex: 16, // Milanese Strap (ORD-1006)
       quantity: 1,
-      reason: 'Damaged',
-      description: 'Base heating element trips the GFCI breaker repeatedly.',
+      reason: 'Wrong Item',
+      description: 'Received Silver strap instead of Rose Gold ordered.',
       status: 'Open',
       resolution: null,
       refundAmount: null,
       notes: [
-        { agentName: 'Agent David Vance', text: 'High priority electrical defect flagged.' },
+        { agentName: 'Agent Sneha Rao', text: 'Customer attached unboxing photo showing Silver band.' },
       ],
       createdAt: new Date('2026-03-04T08:30:00Z'),
     },
-    // 18: In Review (Coffee Grinder ORD-1006)
+    // 18: In Review
     {
       refSuffix: '0018',
-      itemIndex: 17, // Coffee Grinder
+      itemIndex: 17, // Wireless Charging Stand (ORD-1006)
       quantity: 1,
       reason: 'Not As Described',
-      description: 'Espresso grind setting is too coarse for unpressurized portafilter baskets.',
+      description: 'Does not charge phone with shockproof protective bumper case on.',
       status: 'In Review',
       resolution: null,
       refundAmount: null,
       notes: [
-        { agentName: 'Agent Emily Thorne', text: 'Consulting with equipment specialist on burr calibration shim kit.' },
+        { agentName: 'Agent Rohan Verma', text: 'Testing Qi charging induction range with thick armor cases.' },
       ],
       createdAt: new Date('2026-03-04T10:15:00Z'),
     },
     // 19: Approved (Replacement)
     {
       refSuffix: '0019',
-      itemIndex: 18, // Glass Cups ORD-1006
+      itemIndex: 18, // Leather Messenger Bag (ORD-1007)
       quantity: 1,
       reason: 'Damaged',
-      description: 'One of the four double-walled glasses arrived shattered in package.',
+      description: 'Main brass zipper teeth misaligned and stuck near corner.',
       status: 'Approved',
       resolution: 'Replacement',
       refundAmount: null,
       notes: [
-        { agentName: 'Agent Mike Zhao', text: 'Customer provided photos of broken glass. Sent replacement 4-pack immediately.' },
+        { agentName: 'Agent Rajesh Kumar', text: 'Approved replacement from fresh craftsman batch.' },
       ],
       createdAt: new Date('2026-03-04T15:00:00Z'),
     },
     // 20: Completed (Store Credit)
     {
       refSuffix: '0020',
-      itemIndex: 19, // Pour-Over Filter ORD-1006
+      itemIndex: 19, // Leather Wallet (ORD-1007)
       quantity: 1,
       reason: 'Changed Mind',
-      description: 'Prefers paper filters over stainless mesh taste profile.',
+      description: 'Decided to purchase travel passport holder instead.',
       status: 'Completed',
       resolution: 'Store Credit',
       refundAmount: null,
       notes: [
-        { agentName: 'Agent Sarah Davis', text: '$45.00 store credit gift code sent to customer email.' },
+        { agentName: 'Agent Priya Sharma', text: 'Store credit coupon of ₹1,199 credited to Vikram Malhotra account.' },
       ],
       createdAt: new Date('2026-03-05T09:00:00Z'),
     },
-    // 21: In Review (4K Monitor ORD-1007)
+    // 21: In Review
     {
       refSuffix: '0021',
-      itemIndex: 20, // 4K Monitor
+      itemIndex: 20, // Brass Key Valet (ORD-1007)
       quantity: 1,
       reason: 'Damaged',
-      description: 'Cluster of 4 bright dead pixels near the top-center edge.',
+      description: 'Spring clip retention tension is too loose to secure bike keys.',
       status: 'In Review',
       resolution: null,
       refundAmount: null,
       notes: [
-        { agentName: 'Agent David Vance', text: 'Checking manufacturer pixel defect threshold policy (ISO 13406-2).' },
+        { agentName: 'Agent Sneha Rao', text: 'Checking assembly batch quality.' },
       ],
       createdAt: new Date('2026-03-06T11:20:00Z'),
     },
     // 22: Approved (Refund)
     {
       refSuffix: '0022',
-      itemIndex: 21, // Monitor Arm ORD-1007
+      itemIndex: 21, // Electric Kettle (ORD-1008)
       quantity: 1,
-      reason: 'Size Issue',
-      description: 'Desk clamp does not fit bevel on chamfered desk edge.',
+      reason: 'Damaged',
+      description: 'Auto-shutoff dry boil sensor fails to trigger when water boils.',
       status: 'Approved',
       resolution: 'Refund',
-      refundAmount: 120.00,
+      refundAmount: 2799.00,
       notes: [
-        { agentName: 'Agent David Vance', text: 'Customer initiated return. Return label dispatched.' },
+        { agentName: 'Agent Priya Sharma', text: 'Safety concern acknowledged immediately. Full ₹2,799 refund approved.' },
       ],
       createdAt: new Date('2026-03-06T16:00:00Z'),
     },
-    // 23: Rejected (HDMI Cable ORD-1007)
+    // 23: Rejected
     {
       refSuffix: '0023',
-      itemIndex: 22, // HDMI Cable
+      itemIndex: 22, // South Indian Filter Brewer (ORD-1008)
       quantity: 1,
       reason: 'Changed Mind',
-      description: 'Customer claims they no longer need the extra cable.',
+      description: 'Customer claims decoction takes too long compared to instant coffee powder.',
       status: 'Rejected',
       resolution: null,
       refundAmount: null,
       notes: [
-        { agentName: 'Agent Sarah Davis', text: 'Item cable seal was cut open and cable stripped. Ineligible for change-of-mind return.' },
+        { agentName: 'Agent Rajesh Kumar', text: 'Item was used with chicory coffee powder and stained. Ineligible for change of mind return.' },
       ],
       createdAt: new Date('2026-03-07T13:30:00Z'),
     },
-    // 24: Open (Expedition Parka ORD-1008)
+    // 24: Open
     {
       refSuffix: '0024',
-      itemIndex: 23, // Expedition Parka
+      itemIndex: 23, // Glass Mug Set (ORD-1008)
       quantity: 1,
-      reason: 'Size Issue',
-      description: 'Medium is too loose around shoulders. Customer wants Small if available.',
+      reason: 'Damaged',
+      description: 'One borosilicate glass mug cracked at base upon unboxing.',
       status: 'Open',
       resolution: null,
       refundAmount: null,
       notes: [
-        { agentName: 'Support Bot', text: 'Size exchange inquiry queued.' },
+        { agentName: 'Support Bot', text: 'Transit damage claimed by customer Pooja Nair.' },
       ],
       createdAt: new Date('2026-03-09T10:00:00Z'),
     },
     // 25: Approved (Refund)
     {
       refSuffix: '0025',
-      itemIndex: 24, // Thermal Gloves ORD-1008
+      itemIndex: 24, // Polar Parka (ORD-1009)
       quantity: 1,
-      reason: 'Wrong Item',
-      description: 'Received leather work gloves instead of Thermal Touchscreen gloves.',
+      reason: 'Size Issue',
+      description: 'Size L is too loose around waist and sleeves are 2 inches long.',
       status: 'Approved',
       resolution: 'Refund',
-      refundAmount: 45.00,
+      refundAmount: 2899.00,
       notes: [
-        { agentName: 'Agent Emily Thorne', text: 'Warehouse SKU mapping error confirmed. Refund approved.' },
+        { agentName: 'Agent Rohan Verma', text: 'Return initiated for refund. Customer advised to re-order Size M.' },
       ],
       createdAt: new Date('2026-03-09T14:10:00Z'),
     },
     // 26: Completed (Replacement)
     {
       refSuffix: '0026',
-      itemIndex: 25, // Merino Beanie ORD-1008
+      itemIndex: 25, // Touchscreen Gloves (ORD-1009)
       quantity: 1,
-      reason: 'Damaged',
-      description: 'Unraveled knit seam on top crown.',
+      reason: 'Wrong Item',
+      description: 'Received Medium size instead of Large size ordered.',
       status: 'Completed',
       resolution: 'Replacement',
       refundAmount: null,
       notes: [
-        { agentName: 'Agent Mike Zhao', text: 'Replacement beanie shipped.' },
-        { agentName: 'Agent Mike Zhao', text: 'Customer reported receipt of flawless replacement. Closed.' },
+        { agentName: 'Agent Sneha Rao', text: 'Exchange for Large dispatched via express courier.' },
+        { agentName: 'Agent Sneha Rao', text: 'Customer confirmed perfect fit.' },
       ],
       createdAt: new Date('2026-03-10T09:40:00Z'),
     },
-    // 27: Open (Smartwatch ORD-1009)
+    // 27: Open
     {
       refSuffix: '0027',
-      itemIndex: 26, // Fitness Watch
+      itemIndex: 26, // Wool Beanie (ORD-1009)
       quantity: 1,
-      reason: 'Not As Described',
-      description: 'Heart rate monitor readings spike inaccurately compared to chest strap.',
+      reason: 'Changed Mind',
+      description: 'Ordered Maroon color, wants Charcoal Grey instead.',
       status: 'Open',
       resolution: null,
       refundAmount: null,
       notes: [
-        { agentName: 'Agent David Vance', text: 'Advised customer on optical sensor skin contact adjustment.' },
+        { agentName: 'Agent Priya Sharma', text: 'Checking Charcoal Grey stock availability.' },
       ],
       createdAt: new Date('2026-03-13T12:00:00Z'),
     },
-    // 28: In Review (Sports Band ORD-1009)
+    // 28: In Review
     {
       refSuffix: '0028',
-      itemIndex: 27, // Sports Band
+      itemIndex: 27, // Standing Mat (ORD-1010)
       quantity: 1,
-      reason: 'Wrong Item',
-      description: 'Received 20mm lug width instead of 22mm.',
+      reason: 'Not As Described',
+      description: 'Mat slips slightly on polished Italian marble flooring.',
       status: 'In Review',
       resolution: null,
       refundAmount: null,
       notes: [
-        { agentName: 'Agent Sarah Davis', text: 'Checking warehouse inventory for correct 22mm bands.' },
+        { agentName: 'Agent Rajesh Kumar', text: 'Advising anti-skid floor grip pad accessory.' },
       ],
       createdAt: new Date('2026-03-13T16:20:00Z'),
     },
     // 29: Approved (Store Credit)
     {
       refSuffix: '0029',
-      itemIndex: 28, // Fast Charging Puck ORD-1009
+      itemIndex: 28, // Laptop Riser Stand (ORD-1010)
       quantity: 1,
       reason: 'Changed Mind',
-      description: 'Already had a wireless pad that works with the watch.',
+      description: 'Already received a laptop riser as a company gift.',
       status: 'Approved',
       resolution: 'Store Credit',
       refundAmount: null,
       notes: [
-        { agentName: 'Agent Emily Thorne', text: 'Approved for $40.00 store credit.' },
+        { agentName: 'Agent Priya Sharma', text: 'Store credit voucher of ₹1,299 issued.' },
       ],
       createdAt: new Date('2026-03-14T11:15:00Z'),
     },
-    // 30: Open (Ceramic Lamp ORD-1010)
+    // 30: Open
     {
       refSuffix: '0030',
-      itemIndex: 29, // Table Lamp
+      itemIndex: 29, // Cable Raceway (ORD-1010)
       quantity: 1,
-      reason: 'Damaged',
-      description: 'Ceramic lamp base cracked during shipping transit.',
+      reason: 'Size Issue',
+      description: 'Raceway spine width is narrow for dual thick desktop power cords.',
       status: 'Open',
       resolution: null,
       refundAmount: null,
       notes: [
-        { agentName: 'Support Bot', text: 'Customer uploaded delivery photo showing box crushed on corner.' },
+        { agentName: 'Support Bot', text: 'Return registered.' },
       ],
       createdAt: new Date('2026-03-16T10:00:00Z'),
     },
     // 31: Approved (Refund)
     {
       refSuffix: '0031',
-      itemIndex: 30, // Smart Bulbs ORD-1010
+      itemIndex: 0, // Frido Insoles (Historical re-attempt after rejection or extra request on ORD-1001 item 0)
+      // Note: itemIndex 0 already has #1 (Open). To preserve Rule 3, let's use another item!
+      itemIndex: 8, // Desk Mat ORD-1003 (previous #9 was Completed, so new request is 100% legal per Rule 3!)
       quantity: 1,
-      reason: 'Not As Described',
-      description: 'Bulbs flicker when paired with standard dimmer switch.',
+      reason: 'Wrong Item',
+      description: 'Customer reordered mat but received Navy Blue instead of Dark Charcoal.',
       status: 'Approved',
       resolution: 'Refund',
-      refundAmount: 35.00,
+      refundAmount: 999.00,
       notes: [
-        { agentName: 'Agent Mike Zhao', text: 'Bulbs require dedicated smart app dimming, incompatible with mechanical dimmers. Refund approved.' },
+        { agentName: 'Agent Priya Sharma', text: 'Approved refund of ₹999 for mispicked color.' },
       ],
       createdAt: new Date('2026-03-16T14:30:00Z'),
     },
-    // 32: Rejected (Jute Coaster ORD-1010)
+    // 32: Rejected
     {
       refSuffix: '0032',
-      itemIndex: 31, // Coasters
+      itemIndex: 5, // Headphone Case ORD-1002 (previous was rejected in #6)
       quantity: 1,
       reason: 'Changed Mind',
-      description: 'Color doesn’t match dining table.',
+      description: 'Customer claims their friend gave them an identical case.',
       status: 'Rejected',
       resolution: null,
       refundAmount: null,
       notes: [
-        { agentName: 'Agent Sarah Davis', text: 'Clear clearance final-sale tag on coaster set. Returns not permitted for this item.' },
+        { agentName: 'Agent Rajesh Kumar', text: 'Second change of mind attempt on final clearance sale item. Rejected.' },
       ],
       createdAt: new Date('2026-03-17T11:00:00Z'),
     },
-    // 33: A second historical request on an item that was previously Rejected (ORD-1002 Item 5) - perfectly allowed by Rule 3!
+    // 33: Open (Item 12 Running shoes ORD-1005 was Completed in #13, so new request is legal!)
     {
       refSuffix: '0033',
-      itemIndex: 5, // Cable Management Spine (ORD-1002), previously rejected in #6
+      itemIndex: 12, // Running shoes ORD-1005
       quantity: 1,
       reason: 'Wrong Item',
-      description: 'Customer found warehouse shipped the standard model instead of the extended model specified in confirmation email.',
+      description: 'Customer reordered but warehouse shipped women edition instead of men UK 9.',
       status: 'Open',
       resolution: null,
       refundAmount: null,
       notes: [
-        { agentName: 'Agent Sarah Davis', text: 'Re-opened under misdelivery case after reviewing original purchase confirmation.' },
+        { agentName: 'Agent Rohan Verma', text: 'Verified label error on shoe carton box.' },
       ],
       createdAt: new Date('2026-03-18T09:00:00Z'),
     },
-    // 34: A soft-deleted request (Status Open, soft-deleted to test Rule 5)
+    // 34: Soft-deleted sample (Status Open, soft-deleted to verify Rule 5)
     {
       refSuffix: '0034',
-      itemIndex: 4, // Anti-Fatigue Desk Mat
+      itemIndex: 3, // Headphones ORD-1002 (previous was completed in #4)
       quantity: 1,
       reason: 'Changed Mind',
-      description: 'Accidental return request duplicate submitted by customer.',
+      description: 'Duplicate return ticket generated by mistake when customer pressed submit twice.',
       status: 'Open',
       resolution: null,
       refundAmount: null,
       deletedAt: new Date('2026-03-18T10:00:00Z'),
       notes: [
-        { agentName: 'Agent Mike Zhao', text: 'Customer called stating this was submitted by error. Removed via soft deletion.' },
+        { agentName: 'Agent Priya Sharma', text: 'Customer confirmed accidental duplicate submission. Soft removed per policy.' },
       ],
       createdAt: new Date('2026-03-18T09:30:00Z'),
     },
   ];
 
-  console.log(`Seeding ${returnRequestsData.length} return requests...`);
+  console.log(`Seeding ${returnRequestsData.length} Indian return requests...`);
 
   for (const r of returnRequestsData) {
     const item = createdItems[r.itemIndex];
@@ -580,7 +581,7 @@ async function main() {
 
     const ref = `RET-2026-${r.refSuffix}`;
 
-    const createdReq = await prisma.returnRequest.create({
+    await prisma.returnRequest.create({
       data: {
         reference: ref,
         orderId: order.id,
@@ -607,11 +608,11 @@ async function main() {
     });
   }
 
-  console.log('--- Seeding completed successfully! ---');
-  console.log(`Summary:`);
-  console.log(`- 10 Orders created`);
+  console.log('--- Indian Dataset Seeding completed successfully! ---');
+  console.log('Summary:');
+  console.log(`- 10 Indian Orders created with realistic +91 phones & ₹ INR amounts`);
   console.log(`- ${createdItems.length} Order items created`);
-  console.log(`- ${returnRequestsData.length} Return requests seeded across all statuses and reasons.`);
+  console.log(`- ${returnRequestsData.length} Return requests seeded with Indian names & context.`);
 }
 
 main()
@@ -622,4 +623,3 @@ main()
   .finally(async () => {
     await prisma.$disconnect();
   });
-

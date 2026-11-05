@@ -138,13 +138,13 @@ export function Sidebar({ isOpen, onClose }) {
           <div className="flex items-center gap-3">
             <div className="relative">
               <div className="w-9 h-9 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-semibold text-xs shadow-inner">
-                SA
+                PS
               </div>
               <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-500 ring-2 ring-slate-900" />
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-xs font-semibold text-white truncate">Agent Sarah Davis</p>
-              <p className="text-[11px] text-slate-400 truncate">Tier 2 Support Specialist</p>
+              <p className="text-xs font-semibold text-white truncate">Agent Priya Sharma</p>
+              <p className="text-[11px] text-slate-400 truncate">Senior Support Specialist</p>
             </div>
           </div>
         </div>

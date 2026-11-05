@@ -8,7 +8,7 @@ import { useToast } from '@/hooks/useToast';
 export function NotesSection({ returnRequestId, notes = [], onNoteAdded }) {
   const { success, error } = useToast();
   const [text, setText] = useState('');
-  const [agentName, setAgentName] = useState('Agent Sarah Davis');
+  const [agentName, setAgentName] = useState('Agent Priya Sharma');
   const [submitting, setSubmitting] = useState(false);
 
   async function handleAddNote(e) {

@@ -43,7 +43,7 @@ export function CreateReturnForm({ initialOrders = [] }) {
   const [quantity, setQuantity] = useState(1);
   const [reason, setReason] = useState(ALL_RETURN_REASONS[0]);
   const [description, setDescription] = useState('');
-  const [agentName, setAgentName] = useState('Agent Sarah Davis');
+  const [agentName, setAgentName] = useState('Agent Priya Sharma');
 
   const [loadingOrders, setLoadingOrders] = useState(orders.length === 0);
   const [submitting, setSubmitting] = useState(false);
@@ -217,7 +217,7 @@ export function CreateReturnForm({ initialOrders = [] }) {
               required
               value={customerName}
               onChange={(e) => setCustomerName(e.target.value)}
-              placeholder="e.g. Alex Rivera"
+              placeholder="e.g. Rahul Sharma"
               className="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:outline-none"
             />
           </div>
@@ -231,7 +231,7 @@ export function CreateReturnForm({ initialOrders = [] }) {
               required
               value={customerEmail}
               onChange={(e) => setCustomerEmail(e.target.value)}
-              placeholder="alex.rivera@example.com"
+              placeholder="rahul.sharma@gmail.com"
               className="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:outline-none"
             />
           </div>
@@ -245,7 +245,7 @@ export function CreateReturnForm({ initialOrders = [] }) {
               required
               value={customerPhone}
               onChange={(e) => setCustomerPhone(e.target.value)}
-              placeholder="+1 (555) 234-5678"
+              placeholder="+91 98201 23456"
               className="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:outline-none"
             />
           </div>

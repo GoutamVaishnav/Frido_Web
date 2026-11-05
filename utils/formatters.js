@@ -1,13 +1,15 @@
 /**
  * Utility functions for currency and date formatting
+ * Configured for Indian locale (INR, en-IN)
  */
 
 export function formatCurrency(amount) {
-  if (amount === null || amount === undefined || isNaN(amount)) return '$0.00';
+  if (amount === null || amount === undefined || isNaN(amount)) return '₹0';
   const num = typeof amount === 'number' ? amount : parseFloat(amount.toString());
-  return new Intl.NumberFormat('en-US', {
+  return new Intl.NumberFormat('en-IN', {
     style: 'currency',
-    currency: 'USD',
+    currency: 'INR',
+    maximumFractionDigits: 0,
   }).format(num);
 }
 
@@ -15,7 +17,7 @@ export function formatDate(dateString) {
   if (!dateString) return '—';
   const date = new Date(dateString);
   if (isNaN(date.getTime())) return '—';
-  return new Intl.DateTimeFormat('en-US', {
+  return new Intl.DateTimeFormat('en-IN', {
     year: 'numeric',
     month: 'short',
     day: 'numeric',
@@ -26,12 +28,13 @@ export function formatDateTime(dateString) {
   if (!dateString) return '—';
   const date = new Date(dateString);
   if (isNaN(date.getTime())) return '—';
-  return new Intl.DateTimeFormat('en-US', {
+  return new Intl.DateTimeFormat('en-IN', {
     year: 'numeric',
     month: 'short',
     day: 'numeric',
     hour: '2-digit',
     minute: '2-digit',
+    hour12: true,
   }).format(date);
 }
 
@@ -48,4 +51,3 @@ export function formatRelativeTime(dateString) {
 
   return formatDate(dateString);
 }
-
