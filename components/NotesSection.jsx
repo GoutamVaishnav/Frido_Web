@@ -131,3 +131,4 @@ export function NotesSection({ returnRequestId, notes = [], onNoteAdded }) {
     </div>
   );
 }
+

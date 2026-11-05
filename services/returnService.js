@@ -445,3 +445,4 @@ export async function softDeleteReturnRequest(id, agentName = 'Support Agent') {
 
   return { id, reference: existing.reference, deleted: true };
 }
+

@@ -74,3 +74,4 @@ export function ReasonDistributionChart({ data = [], total = 0 }) {
     </div>
   );
 }
+

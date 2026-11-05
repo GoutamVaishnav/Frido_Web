@@ -55,3 +55,4 @@ export function ResolutionBadge({ resolution }) {
     </span>
   );
 }
+

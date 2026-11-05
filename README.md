@@ -199,3 +199,4 @@ All API endpoints follow a consistent JSON response envelope:
 | `POST` | `/api/returns/[id]/notes` | Add an immutable audit note |
 | `DELETE` | `/api/returns/[id]` | Soft removal (Rule 5: allowed only for Open or Rejected requests) |
 | `GET` | `/api/stats` | Aggregated dashboard metrics, charts, and activity feed |
+

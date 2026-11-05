@@ -118,3 +118,4 @@ export function RecentReturnsTable({ requests = [] }) {
     </div>
   );
 }
+

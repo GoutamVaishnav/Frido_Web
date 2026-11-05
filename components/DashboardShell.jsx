@@ -22,3 +22,4 @@ export function DashboardShell({ children }) {
     </div>
   );
 }
+

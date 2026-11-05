@@ -77,3 +77,4 @@ export function StatusDistributionChart({ data = [], total = 0 }) {
     </div>
   );
 }
+

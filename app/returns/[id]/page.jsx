@@ -61,3 +61,4 @@ export default async function ReturnDetailPage({ params }) {
 
   return <ReturnDetailsView initialData={serialized} />;
 }
+

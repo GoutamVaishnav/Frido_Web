@@ -48,3 +48,4 @@ export function formatRelativeTime(dateString) {
 
   return formatDate(dateString);
 }
+
