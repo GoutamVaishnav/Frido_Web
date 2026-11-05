@@ -3,6 +3,7 @@ import { successResponse, errorResponse, ERROR_CODES } from '@/lib/api-response'
 
 export const dynamic = 'force-dynamic';
 export const dynamicParams = true;
+export const runtime = 'nodejs';
 
 export async function GET(request, { params }) {
   try {

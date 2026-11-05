@@ -2,6 +2,7 @@ import { getOrders } from '@/services/orderService';
 import { successResponse, errorResponse, ERROR_CODES } from '@/lib/api-response';
 
 export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
 
 export async function GET(request) {
   try {
